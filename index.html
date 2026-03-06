@@ -1,39 +1,28 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="th">
 <head>
 <meta charset="UTF-8">
-<title>LANDORA Real Estate</title>
+<title>LANDORA - Land Marketplace</title>
 
 <style>
 
 body{
 font-family: Arial;
-background:#f4f4f4;
+background:#f4f6f9;
 margin:0;
 }
 
 header{
-background:#0f172a;
+background:#1e88e5;
 color:white;
 padding:20px;
 text-align:center;
 }
 
-nav{
-background:#1e293b;
-padding:10px;
-text-align:center;
-}
-
-nav a{
-color:white;
-margin:10px;
-text-decoration:none;
-font-weight:bold;
-}
-
 .container{
-padding:40px;
+width:90%;
+margin:auto;
+margin-top:30px;
 }
 
 .property{
@@ -41,110 +30,84 @@ background:white;
 padding:20px;
 margin-bottom:20px;
 border-radius:10px;
+box-shadow:0 2px 10px rgba(0,0,0,0.1);
 }
 
 button{
-background:#16a34a;
-color:white;
-border:none;
 padding:10px 20px;
-border-radius:5px;
+border:none;
+border-radius:6px;
+background:#1e88e5;
+color:white;
 cursor:pointer;
 }
 
-footer{
-background:#0f172a;
-color:white;
-text-align:center;
-padding:20px;
-margin-top:40px;
+button:hover{
+background:#1565c0;
 }
+
+.post-btn{
+display:block;
+margin:auto;
+margin-top:40px;
+font-size:18px;
+padding:15px 30px;
+}
+
+footer{
+text-align:center;
+margin-top:50px;
+padding:20px;
+background:#222;
+color:white;
+}
+
+</style>
+</head>
 
 <body>
 
 <header>
 <h1>LANDORA</h1>
-<p>Global Real Estate Marketplace</p>
+<p>แพลตฟอร์มตัวกลางสำหรับการซื้อขายที่ดิน</p>
 </header>
-
-<nav>
-
-<a href="#">Home</a>
-<a href="#">Buy</a>
-<a href="#">Sell</a>
-<a href="#">Rent</a>
-<a href="#">Agent</a>
-
-</nav>
 
 <div class="container">
 
-<h2>Latest Properties</h2>
-
 <div class="property">
-
 <h3>Land for Sale</h3>
-
-<img src="https://images.unsplash.com/photo-1500382017468-9049fed747ef" width="100%">
-
-<p>Location: Nakhon Si Thammarat</p>
-<p>Price: 2,500,000 THB</p>
-
-<p>Location: Nakhon Si Thammarat</p>
-
-<p>Price: 2,500,000 THB</p>
-
-<a href="https://maps.google.com/?q=8.4304,99.9631" target="_blank">
-<button style="background:green;color:white;padding:8px 15px;border:none;">
-View Map
-</button>
-</a>
-
+<p>Location: Phuket</p>
+<p>Price: 3,500,000 THB</p>
+<button onclick="contactOwner()">Contact Owner</button>
 </div>
 
 <div class="property">
-
-<h3>House for Rent</h3>
-
-<p>Location: Phuket</p>
-
-<p>Price: 15,000 THB / Month</p>
-
-<button>Contact Owner</button>
-
+<h3>Land for Sale</h3>
+<p>Location: Bangkok</p>
+<p>Price: 5,000,000 THB</p>
+<button onclick="contactOwner()">Contact Owner</button>
 </div>
+
+<button class="post-btn" onclick="postLand()">Post Land for Sale</button>
 
 </div>
 
 <footer>
-
 <p>© 2026 LANDORA Platform</p>
-
+<p>LANDORA เป็นเพียงตัวกลางในการลงประกาศซื้อขายที่ดินเท่านั้น</p>
 </footer>
+
 <script>
-function addProperty() {
 
-alert("ระบบได้รับข้อมูลแล้ว (ทดสอบสำเร็จ)");
-
+function contactOwner(){
+alert("กำลังติดต่อเจ้าของที่ดิน");
 }
+
+function postLand(){
+alert("ระบบลงประกาศกำลังพัฒนา");
+}
+
 </script>
 
-</body>
-  <script>
-function addProperty(){
-alert("ระบบทำงานแล้ว");
-}
-</script>
-  
 </body>
 </html>
-<div style="text-align:center;margin:30px;">
-<button onclick="addProperty()" style="padding:15px 30px;font-size:18px;background:#007bff;color:white;border:none;border-radius:8px;">
-Submit
-</button>
-style="padding:15px 30px;font-size:18px;background:#007bff;color:white;border:none;border-radius:8px;">
-Submit
-</button>
-Post Land for Sale
-</button>
-</div>
