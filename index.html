@@ -83,80 +83,7 @@ border-radius:10px;
 <div id="listingContainer"></div>
 
 <script>
-
-const form = document.getElementById("landForm");
-const container = document.getElementById("listingContainer");
-
-form.addEventListener("submit", function(e){
-
-e.preventDefault();
-
-let title = document.getElementById("title").value;
-let province = document.getElementById("province").value;
-let price = document.getElementById("price").value;
-let detail = document.getElementById("detail").value;
-let imageFile = document.getElementById("imageInput").files[0];
-
-let reader = new FileReader();
-
-reader.onload = function(){
-
-let listing = document.createElement("div");
-listing.className = "listing";
-
-listing.innerHTML = `
-<img src="${reader.result}">
-<h3>${title}</h3>
-<p>จังหวัด: ${province}</p>
-<p>ราคา: ${price} บาท</p>
-<p>${detail}</p>
-<p>พิกัดที่ดิน: ${selectedLocation}</p>
-`;
-
-container.prepend(listing);
-
-};
-
-if(imageFile){
-reader.readAsDataURL(imageFile);
-}
-
-form.reset();
-
-});
-let map;
-let marker;
-let selectedLocation = "";
-
-function initMap(){
-
-let defaultLocation = {lat:13.736717, lng:100.523186};
-
-map = new google.maps.Map(document.getElementById("map"),{
-zoom:6,
-center:defaultLocation
-});
-
-map.addListener("click",function(e){
-
-let location = e.latLng;
-
-if(marker){
-marker.setMap(null);
-}
-
-marker = new google.maps.Marker({
-position:location,
-map:map
-});
-
-selectedLocation = location.lat() + "," + location.lng();
-
-});
-
-}
-
-window.onload = initMap;
+  
 </script>
 <h2 style="text-align:center;">ตำแหน่งที่ดิน</h2>
 
@@ -168,8 +95,59 @@ loading="lazy"
 allowfullscreen
 src="https://www.google.com/maps?q=7.8804,99.3923&output=embed">
 </iframe>
-  
+ <script>
+
+let posts = JSON.parse(localStorage.getItem("landora_posts")) || [];
+
+function renderPosts(){
+    const postContainer = document.getElementById("posts");
+    postContainer.innerHTML = "";
+
+    posts.forEach(post => {
+
+        const div = document.createElement("div");
+        div.style.border = "1px solid #ccc";
+        div.style.padding = "15px";
+        div.style.marginTop = "15px";
+
+        div.innerHTML = `
+        <h3>${post.title}</h3>
+        <p>จังหวัด: ${post.province}</p>
+        <p>ราคา: ${post.price} บาท</p>
+        <p>${post.detail}</p>
+        `;
+
+        postContainer.appendChild(div);
+    });
+}
+
+function addPost(){
+
+    const title = document.getElementById("title").value;
+    const province = document.getElementById("province").value;
+    const price = document.getElementById("price").value;
+    const detail = document.getElementById("detail").value;
+
+    const post = {
+        title,
+        province,
+        price,
+        detail
+    };
+
+    posts.push(post);
+
+    localStorage.setItem("landora_posts", JSON.stringify(posts));
+
+    renderPosts();
+
+}
+
+renderPosts();
+
+</script> 
 </body>
 </html>
+
 
 
