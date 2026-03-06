@@ -1,71 +1,89 @@
 <!DOCTYPE html>
-<html lang="th">
+<html>
 <head>
 <meta charset="UTF-8">
-<title>LANDORA</title>
+<title>Marketplace</title>
 
-<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
 
 <style>
 
 body{
-font-family: Arial;
-background:#f4f4f4;
+font-family:Arial;
+background:#f5f5f5;
+margin:0;
+}
+
+header{
+background:#1877f2;
+color:white;
+padding:15px;
+font-size:22px;
 text-align:center;
 }
 
 .container{
-background:white;
-width:400px;
+width:90%;
+max-width:900px;
 margin:auto;
-padding:20px;
-border-radius:10px;
-box-shadow:0 0 10px rgba(0,0,0,0.1);
+margin-top:20px;
 }
 
-.search{
+.form-box{
 background:white;
-width:400px;
-margin:auto;
 padding:20px;
 border-radius:10px;
 margin-bottom:20px;
+box-shadow:0 0 10px rgba(0,0,0,0.1);
 }
 
-input, textarea{
-width:90%;
+input{
+width:100%;
 padding:10px;
-margin:10px;
+margin-top:8px;
+margin-bottom:10px;
+border:1px solid #ddd;
+border-radius:6px;
 }
 
 button{
-background:#28a745;
+background:#1877f2;
 color:white;
 border:none;
-padding:15px;
-width:95%;
-font-size:16px;
+padding:10px;
+border-radius:6px;
 cursor:pointer;
 }
 
-#map{
-height:300px;
-width:90%;
-margin:auto;
+button:hover{
+background:#0f63d1;
 }
 
 .post{
 background:white;
-margin:20px auto;
-padding:20px;
-width:400px;
+padding:15px;
 border-radius:10px;
-box-shadow:0 0 5px rgba(0,0,0,0.1);
+margin-bottom:15px;
+box-shadow:0 0 8px rgba(0,0,0,0.1);
 }
 
-.post img{
+img{
 width:100%;
 border-radius:10px;
+margin-top:10px;
+}
+
+.actions{
+margin-top:10px;
+}
+
+.delete{
+background:red;
+}
+
+.edit{
+background:orange;
 }
 
 </style>
@@ -74,191 +92,162 @@ border-radius:10px;
 
 <body>
 
-<h1>LANDORA</h1>
-
-<div class="search">
-
-<h3>ค้นหาที่ดิน</h3>
-
-<input id="searchProvince" placeholder="จังหวัด">
-
-<input id="searchPrice" placeholder="ราคาไม่เกิน">
-
-<button onclick="searchLand()">ค้นหา</button>
-
-</div>
+<header>
+Marketplace ซื้อขายสินค้า
+</header>
 
 <div class="container">
 
-<input id="title" placeholder="ชื่อประกาศ">
+<div class="form-box">
 
-<input id="subdistrict" placeholder="ตำบล">
+<h3>ลงขายสินค้า</h3>
 
-<input id="district" placeholder="อำเภอ">
-
-<input id="province" placeholder="จังหวัด">
+<input id="title" placeholder="ชื่อสินค้า">
 
 <input id="price" placeholder="ราคา">
 
-<textarea id="detail" placeholder="รายละเอียด"></textarea>
+<input id="province" placeholder="จังหวัด">
 
-<label>อัปโหลดรูป</label>
+<input id="district" placeholder="อำเภอ">
+
+<input id="subdistrict" placeholder="ตำบล">
+
 <input type="file" id="image">
 
-<h3>เลือกตำแหน่งที่ดิน</h3>
+<button onclick="addPost()">โพสต์ขาย</button>
 
-<div id="map"></div>
-
-<p>พิกัด: <span id="coords">ยังไม่ได้เลือก</span></p>
-
-<button onclick="postLand()">ลงประกาศ</button>
+<p id="result"></p>
 
 </div>
 
-<h2>ประกาศทั้งหมด</h2>
-
 <div id="posts"></div>
 
-<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+</div>
 
 <script>
 
-let lat=""
-let lng=""
+const firebaseConfig = {
+apiKey:"YOUR_API",
+authDomain:"YOUR_DOMAIN",
+projectId:"YOUR_PROJECT",
+storageBucket:"YOUR_BUCKET",
+messagingSenderId:"YOUR_ID",
+appId:"YOUR_APP"
+};
 
-let map=L.map('map').setView([13.736717,100.523186],6)
+firebase.initializeApp(firebaseConfig);
 
-L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
-maxZoom:19
-}).addTo(map)
+const db = firebase.firestore();
 
-let marker
+function addPost(){
 
-map.on('click',function(e){
+const title=document.getElementById("title").value;
+const price=document.getElementById("price").value;
+const province=document.getElementById("province").value;
+const district=document.getElementById("district").value;
+const subdistrict=document.getElementById("subdistrict").value;
 
-lat=e.latlng.lat
-lng=e.latlng.lng
+db.collection("posts").add({
 
-document.getElementById("coords").innerText=lat+" , "+lng
+title:title,
+price:price,
+province:province,
+district:district,
+subdistrict:subdistrict,
+date:Date.now()
 
-if(marker){
-map.removeLayer(marker)
-}
+})
+.then(()=>{
 
-marker=L.marker([lat,lng]).addTo(map)
+document.getElementById("result").innerHTML="โพสต์สำเร็จ";
+
+loadPosts();
 
 })
 
-function showPosts(data){
+.catch(()=>{
 
-let html=""
+document.getElementById("result").innerHTML="โพสต์ไม่สำเร็จ";
 
-data.forEach(function(item){
+});
+
+}
+
+function loadPosts(){
+
+db.collection("posts").orderBy("date","desc").get()
+.then((snapshot)=>{
+
+let html="";
+
+snapshot.forEach((doc)=>{
+
+const data=doc.data();
 
 html+=`
 
 <div class="post">
 
-<h3>${item.title}</h3>
+<h3>${data.title}</h3>
 
-<p>ตำบล: ${item.subdistrict}</p>
+<p>ราคา : ${data.price}</p>
 
-<p>อำเภอ: ${item.district}</p>
+<p>${data.subdistrict} ${data.district} ${data.province}</p>
 
-<p>จังหวัด: ${item.province}</p>
+<div class="actions">
 
-<p>ราคา: ${item.price}</p>
+<button class="edit" onclick="editPost('${doc.id}')">แก้ไข</button>
 
-<p>${item.detail}</p>
-
-<p>พิกัด: ${item.lat} , ${item.lng}</p>
-
-<img src="${item.image}">
+<button class="delete" onclick="deletePost('${doc.id}')">ลบ</button>
 
 </div>
 
-`
+</div>
+
+`;
+
+});
+
+document.getElementById("posts").innerHTML=html;
+
+});
+
+}
+
+function deletePost(id){
+
+db.collection("posts").doc(id).delete()
+
+.then(()=>{
+
+loadPosts();
+
+});
+
+}
+
+function editPost(id){
+
+const newTitle=prompt("ชื่อสินค้าใหม่");
+
+const newPrice=prompt("ราคาใหม่");
+
+db.collection("posts").doc(id).update({
+
+title:newTitle,
+price:newPrice
 
 })
 
-document.getElementById("posts").innerHTML=html
+.then(()=>{
+
+loadPosts();
+
+});
 
 }
 
-function loadAll(){
-
-let data=JSON.parse(localStorage.getItem("lands")) || []
-
-showPosts(data)
-
-}
-
-function searchLand(){
-
-let province=document.getElementById("searchProvince").value
-let price=document.getElementById("searchPrice").value
-
-let data=JSON.parse(localStorage.getItem("lands")) || []
-
-let result=data.filter(function(item){
-
-let provinceMatch=item.province.includes(province)
-
-let priceMatch=true
-
-if(price!=""){
-priceMatch=parseInt(item.price)<=parseInt(price)
-}
-
-return provinceMatch && priceMatch
-
-})
-
-showPosts(result)
-
-}
-
-function postLand(){
-
-let title=document.getElementById("title").value
-let subdistrict=document.getElementById("subdistrict").value
-let district=document.getElementById("district").value
-let province=document.getElementById("province").value
-let price=document.getElementById("price").value
-let detail=document.getElementById("detail").value
-let image=document.getElementById("image").files[0]
-
-let reader=new FileReader()
-
-reader.onload=function(e){
-
-let newLand={
-title:title,
-subdistrict:subdistrict,
-district:district,
-province:province,
-price:price,
-detail:detail,
-lat:lat,
-lng:lng,
-image:e.target.result
-}
-
-let data=JSON.parse(localStorage.getItem("lands")) || []
-
-data.push(newLand)
-
-localStorage.setItem("lands",JSON.stringify(data))
-
-loadAll()
-
-}
-
-reader.readAsDataURL(image)
-
-}
-
-loadAll()
+loadPosts();
 
 </script>
 
