@@ -55,6 +55,9 @@ width:100%;
 border-radius:10px;
 }
 </style>
+  
+<script src="https://maps.googleapis.com/maps/api/js"></script>
+  
 </head>
 
 <body>
@@ -70,7 +73,7 @@ border-radius:10px;
 <input type="number" id="price" placeholder="ราคา" required>
 
 <textarea id="detail" placeholder="รายละเอียด"></textarea>
-
+<div id="map" style="height:300px;margin-top:10px;"></div>
 <input type="file" id="imageInput" accept="image/*">
 
 <button type="submit">ลงประกาศ</button>
@@ -107,6 +110,7 @@ listing.innerHTML = `
 <p>จังหวัด: ${province}</p>
 <p>ราคา: ${price} บาท</p>
 <p>${detail}</p>
+<p>พิกัดที่ดิน: ${selectedLocation}</p>
 `;
 
 container.prepend(listing);
@@ -120,8 +124,41 @@ reader.readAsDataURL(imageFile);
 form.reset();
 
 });
+let map;
+let marker;
+let selectedLocation = "";
 
+function initMap(){
+
+let defaultLocation = {lat:13.736717, lng:100.523186};
+
+map = new google.maps.Map(document.getElementById("map"),{
+zoom:6,
+center:defaultLocation
+});
+
+map.addListener("click",function(e){
+
+let location = e.latLng;
+
+if(marker){
+marker.setMap(null);
+}
+
+marker = new google.maps.Marker({
+position:location,
+map:map
+});
+
+selectedLocation = location.lat() + "," + location.lng();
+
+});
+
+}
+
+window.onload = initMap;
 </script>
 
 </body>
 </html>
+
