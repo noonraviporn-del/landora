@@ -2,158 +2,173 @@
 <html lang="th">
 <head>
 <meta charset="UTF-8">
-<title>LANDORA - ตลาดซื้อขายที่ดิน</title>
+<title>LANDORA</title>
 
 <style>
 
 body{
 font-family: Arial;
 margin:0;
-background:#f4f4f4;
+background:#f5f5f5;
 }
 
 header{
-background:#1e7e34;
+background:#1f9d55;
 color:white;
-padding:20px;
 text-align:center;
+padding:30px;
 }
 
 .container{
 width:90%;
+max-width:900px;
 margin:auto;
-margin-top:20px;
+margin-top:30px;
 }
 
-.card{
+.property{
 background:white;
 padding:20px;
-margin-bottom:20px;
 border-radius:10px;
+margin-bottom:20px;
 box-shadow:0 0 10px rgba(0,0,0,0.1);
 }
 
 button{
-background:#28a745;
+background:#1f9d55;
 color:white;
-padding:10px 20px;
 border:none;
-border-radius:5px;
+padding:10px 15px;
+border-radius:6px;
 cursor:pointer;
 }
 
-button:hover{
-background:#218838;
+.center{
+text-align:center;
+margin-top:20px;
 }
 
-.post-btn{
-text-align:center;
-margin:30px;
+form{
+background:white;
+padding:20px;
+border-radius:10px;
+margin-top:30px;
+box-shadow:0 0 10px rgba(0,0,0,0.1);
+}
+
+input, textarea{
+width:100%;
+padding:10px;
+margin-top:5px;
+margin-bottom:15px;
+border-radius:6px;
+border:1px solid #ccc;
 }
 
 footer{
-background:#333;
+background:#222;
 color:white;
 text-align:center;
-padding:10px;
+padding:20px;
 margin-top:40px;
 }
 
 </style>
-
 </head>
 
 <body>
-<h1>LANDORA - ซื้อขายที่ดิน</h1>
 
-<button onclick="window.location.href='post.html'">
-ลงประกาศขายที่ดิน
-</button>
 <header>
-
 <h1>LANDORA</h1>
-<p>แพลตฟอร์มตลาดซื้อขายที่ดิน บ้าน และอสังหาริมทรัพย์</p>
-
+<p>แพลตฟอร์มประกาศขายที่ดิน บ้าน และอสังหาริมทรัพย์</p>
 </header>
 
 <div class="container">
 
-<div class="card">
+<div id="propertyList">
 
-<h2>ที่ดินขาย</h2>
-
-<p><b>จังหวัด:</b> นครศรีธรรมราช</p>
-
-<p><b>อำเภอ:</b> เมือง</p>
-
-<p><b>ราคา:</b> 2,500,000 บาท</p>
-
-<p><b>รายละเอียด:</b> ที่ดินติดถนน เหมาะสร้างบ้านหรือทำธุรกิจ</p>
-
-<button onclick="contactOwner()">ติดต่อเจ้าของ</button>
-
+<div class="property">
+<h3>ที่ดินขาย</h3>
+<p>จังหวัด: นครศรีธรรมราช</p>
+<p>ราคา: 2,500,000 บาท</p>
+<p>รายละเอียด: ที่ดินติดถนน เหมาะสร้างบ้านหรือธุรกิจ</p>
+<button>ติดต่อเจ้าของ</button>
 </div>
 
-<div class="card">
-
-<h2>บ้านให้เช่า</h2>
-
-<p><b>จังหวัด:</b> ภูเก็ต</p>
-
-<p><b>ราคา:</b> 15,000 บาท / เดือน</p>
-
-<p><b>รายละเอียด:</b> บ้านใกล้ทะเล เหมาะสำหรับชาวต่างชาติ</p>
-
-<button onclick="contactOwner()">ติดต่อเจ้าของ</button>
-
+<div class="property">
+<h3>บ้านให้เช่า</h3>
+<p>จังหวัด: ภูเก็ต</p>
+<p>ราคา: 15,000 บาท / เดือน</p>
+<p>รายละเอียด: บ้านใกล้ทะเล เหมาะสำหรับชาวต่างชาติ</p>
+<button>ติดต่อเจ้าของ</button>
 </div>
 
 </div>
 
-<div class="post-btn">
+<div class="center">
+<button onclick="showForm()">ลงประกาศอสังหา</button>
+</div>
 
-<button onclick="window.location.href='post.html'">
-ลงประกาศขายที่ดิน
-</button>
+<form id="postForm" style="display:none">
+
+<h3>ลงประกาศใหม่</h3>
+
+<label>หัวข้อ</label>
+<input type="text" id="title">
+
+<label>จังหวัด</label>
+<input type="text" id="location">
+
+<label>ราคา</label>
+<input type="text" id="price">
+
+<label>รายละเอียด</label>
+<textarea id="detail"></textarea>
+
+<button type="button" onclick="addProperty()">โพสต์ประกาศ</button>
+
+</form>
+
 </div>
 
 <footer>
 
 <p>© 2026 LANDORA Platform</p>
 
-<p>เว็บไซต์นี้เป็นเพียงตัวกลางในการประกาศซื้อขายอสังหาริมทรัพย์</p>
+<p>เว็บไซต์ประกาศขายที่ดิน บ้าน และอสังหาริมทรัพย์</p>
 
 </footer>
 
 <script>
 
-function contactOwner(){
-
-alert("กรุณาติดต่อผ่านเบอร์โทรหรือ LINE ของเจ้าของประกาศ");
-
+function showForm(){
+document.getElementById("postForm").style.display="block"
 }
 
-function postLand(){
+function addProperty(){
 
-alert("ระบบลงประกาศกำลังพัฒนา");
+let title=document.getElementById("title").value
+let location=document.getElementById("location").value
+let price=document.getElementById("price").value
+let detail=document.getElementById("detail").value
 
-}
-
-</script>
-<div style="text-align:center;margin:40px;">
-<button onclick="goToPost()" 
-style="padding:15px 40px;font-size:18px;background:#28a745;color:white;border:none;border-radius:8px;cursor:pointer;">
-ลงประกาศขายที่ดิน
-</button>
+let html=`
+<div class="property">
+<h3>${title}</h3>
+<p>จังหวัด: ${location}</p>
+<p>ราคา: ${price}</p>
+<p>รายละเอียด: ${detail}</p>
+<button>ติดต่อเจ้าของ</button>
 </div>
+`
 
-<script>
-function goToPost(){
-window.location.href = "post.html";
+document.getElementById("propertyList").innerHTML+=html
+
+alert("ประกาศถูกโพสต์แล้ว")
+
 }
+
 </script>
+
 </body>
 </html>
-
-
-
