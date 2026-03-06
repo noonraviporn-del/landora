@@ -128,6 +128,44 @@ marker=L.marker([lat,lng]).addTo(map)
 
 })
 
+function showPosts(){
+
+let data=JSON.parse(localStorage.getItem("lands")) || []
+
+let html=""
+
+data.forEach(function(item){
+
+html+=`
+
+<div class="post">
+
+<h3>${item.title}</h3>
+
+<p>ตำบล: ${item.subdistrict}</p>
+
+<p>อำเภอ: ${item.district}</p>
+
+<p>จังหวัด: ${item.province}</p>
+
+<p>ราคา: ${item.price}</p>
+
+<p>${item.detail}</p>
+
+<p>พิกัด: ${item.lat} , ${item.lng}</p>
+
+<img src="${item.image}">
+
+</div>
+
+`
+
+})
+
+document.getElementById("posts").innerHTML=html
+
+}
+
 function postLand(){
 
 let title=document.getElementById("title").value
@@ -142,37 +180,33 @@ let reader=new FileReader()
 
 reader.onload=function(e){
 
-let postHTML=`
+let newLand={
+title:title,
+subdistrict:subdistrict,
+district:district,
+province:province,
+price:price,
+detail:detail,
+lat:lat,
+lng:lng,
+image:e.target.result
+}
 
-<div class="post">
+let data=JSON.parse(localStorage.getItem("lands")) || []
 
-<h3>${title}</h3>
+data.push(newLand)
 
-<p>ตำบล: ${subdistrict}</p>
+localStorage.setItem("lands",JSON.stringify(data))
 
-<p>อำเภอ: ${district}</p>
-
-<p>จังหวัด: ${province}</p>
-
-<p>ราคา: ${price}</p>
-
-<p>${detail}</p>
-
-<p>พิกัด: ${lat} , ${lng}</p>
-
-<img src="${e.target.result}">
-
-</div>
-
-`
-
-document.getElementById("posts").innerHTML+=postHTML
+showPosts()
 
 }
 
 reader.readAsDataURL(image)
 
 }
+
+showPosts()
 
 </script>
 
