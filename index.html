@@ -23,6 +23,15 @@ border-radius:10px;
 box-shadow:0 0 10px rgba(0,0,0,0.1);
 }
 
+.search{
+background:white;
+width:400px;
+margin:auto;
+padding:20px;
+border-radius:10px;
+margin-bottom:20px;
+}
+
 input, textarea{
 width:90%;
 padding:10px;
@@ -67,6 +76,18 @@ border-radius:10px;
 
 <h1>LANDORA</h1>
 
+<div class="search">
+
+<h3>ค้นหาที่ดิน</h3>
+
+<input id="searchProvince" placeholder="จังหวัด">
+
+<input id="searchPrice" placeholder="ราคาไม่เกิน">
+
+<button onclick="searchLand()">ค้นหา</button>
+
+</div>
+
 <div class="container">
 
 <input id="title" placeholder="ชื่อประกาศ">
@@ -81,7 +102,7 @@ border-radius:10px;
 
 <textarea id="detail" placeholder="รายละเอียด"></textarea>
 
-<label>อัปโหลดรูปที่ดิน</label>
+<label>อัปโหลดรูป</label>
 <input type="file" id="image">
 
 <h3>เลือกตำแหน่งที่ดิน</h3>
@@ -94,7 +115,7 @@ border-radius:10px;
 
 </div>
 
-<h2>ประกาศที่ดิน</h2>
+<h2>ประกาศทั้งหมด</h2>
 
 <div id="posts"></div>
 
@@ -128,9 +149,7 @@ marker=L.marker([lat,lng]).addTo(map)
 
 })
 
-function showPosts(){
-
-let data=JSON.parse(localStorage.getItem("lands")) || []
+function showPosts(data){
 
 let html=""
 
@@ -166,6 +185,39 @@ document.getElementById("posts").innerHTML=html
 
 }
 
+function loadAll(){
+
+let data=JSON.parse(localStorage.getItem("lands")) || []
+
+showPosts(data)
+
+}
+
+function searchLand(){
+
+let province=document.getElementById("searchProvince").value
+let price=document.getElementById("searchPrice").value
+
+let data=JSON.parse(localStorage.getItem("lands")) || []
+
+let result=data.filter(function(item){
+
+let provinceMatch=item.province.includes(province)
+
+let priceMatch=true
+
+if(price!=""){
+priceMatch=parseInt(item.price)<=parseInt(price)
+}
+
+return provinceMatch && priceMatch
+
+})
+
+showPosts(result)
+
+}
+
 function postLand(){
 
 let title=document.getElementById("title").value
@@ -198,7 +250,7 @@ data.push(newLand)
 
 localStorage.setItem("lands",JSON.stringify(data))
 
-showPosts()
+loadAll()
 
 }
 
@@ -206,7 +258,7 @@ reader.readAsDataURL(image)
 
 }
 
-showPosts()
+loadAll()
 
 </script>
 
