@@ -2,171 +2,124 @@
 <html lang="th">
 <head>
 <meta charset="UTF-8">
-<title>LANDORA</title>
+<title>LANDORA - Marketplace ที่ดิน</title>
 
 <style>
-
 body{
 font-family: Arial;
-margin:0;
-background:#f5f5f5;
-}
-
-header{
-background:#1f9d55;
-color:white;
-text-align:center;
-padding:30px;
-}
-
-.container{
-width:90%;
-max-width:900px;
-margin:auto;
-margin-top:30px;
-}
-
-.property{
-background:white;
+background:#f4f4f4;
 padding:20px;
-border-radius:10px;
-margin-bottom:20px;
-box-shadow:0 0 10px rgba(0,0,0,0.1);
 }
 
-button{
-background:#1f9d55;
-color:white;
-border:none;
-padding:10px 15px;
-border-radius:6px;
-cursor:pointer;
-}
-
-.center{
+h1{
 text-align:center;
-margin-top:20px;
 }
 
 form{
 background:white;
 padding:20px;
 border-radius:10px;
-margin-top:30px;
-box-shadow:0 0 10px rgba(0,0,0,0.1);
+max-width:500px;
+margin:auto;
 }
 
-input, textarea{
+input,textarea{
 width:100%;
 padding:10px;
-margin-top:5px;
-margin-bottom:15px;
-border-radius:6px;
-border:1px solid #ccc;
+margin-top:10px;
 }
 
-footer{
-background:#222;
+button{
+margin-top:10px;
+padding:10px;
+width:100%;
+background:#2ecc71;
 color:white;
-text-align:center;
-padding:20px;
-margin-top:40px;
+border:none;
+font-size:16px;
+cursor:pointer;
 }
 
+.listing{
+background:white;
+padding:15px;
+margin-top:20px;
+border-radius:10px;
+max-width:500px;
+margin-left:auto;
+margin-right:auto;
+}
+
+img{
+width:100%;
+border-radius:10px;
+}
 </style>
 </head>
 
 <body>
 
-<header>
 <h1>LANDORA</h1>
-<p>แพลตฟอร์มประกาศขายที่ดิน บ้าน และอสังหาริมทรัพย์</p>
-</header>
 
-<div class="container">
+<form id="landForm">
 
-<div id="propertyList">
+<input type="text" id="title" placeholder="ชื่อประกาศ" required>
 
-<div class="property">
-<h3>ที่ดินขาย</h3>
-<p>จังหวัด: นครศรีธรรมราช</p>
-<p>ราคา: 2,500,000 บาท</p>
-<p>รายละเอียด: ที่ดินติดถนน เหมาะสร้างบ้านหรือธุรกิจ</p>
-<button>ติดต่อเจ้าของ</button>
-</div>
+<input type="text" id="province" placeholder="จังหวัด" required>
 
-<div class="property">
-<h3>บ้านให้เช่า</h3>
-<p>จังหวัด: ภูเก็ต</p>
-<p>ราคา: 15,000 บาท / เดือน</p>
-<p>รายละเอียด: บ้านใกล้ทะเล เหมาะสำหรับชาวต่างชาติ</p>
-<button>ติดต่อเจ้าของ</button>
-</div>
+<input type="number" id="price" placeholder="ราคา" required>
 
-</div>
+<textarea id="detail" placeholder="รายละเอียด"></textarea>
 
-<div class="center">
-<button onclick="showForm()">ลงประกาศอสังหา</button>
-</div>
+<input type="file" id="imageInput" accept="image/*">
 
-<form id="postForm" style="display:none">
-
-<h3>ลงประกาศใหม่</h3>
-
-<label>หัวข้อ</label>
-<input type="text" id="title">
-
-<label>จังหวัด</label>
-<input type="text" id="location">
-
-<label>ราคา</label>
-<input type="text" id="price">
-
-<label>รายละเอียด</label>
-<textarea id="detail"></textarea>
-
-<button type="button" onclick="addProperty()">โพสต์ประกาศ</button>
+<button type="submit">ลงประกาศ</button>
 
 </form>
 
-</div>
-
-<footer>
-
-<p>© 2026 LANDORA Platform</p>
-
-<p>เว็บไซต์ประกาศขายที่ดิน บ้าน และอสังหาริมทรัพย์</p>
-
-</footer>
+<div id="listingContainer"></div>
 
 <script>
 
-function showForm(){
-document.getElementById("postForm").style.display="block"
-}
+const form = document.getElementById("landForm");
+const container = document.getElementById("listingContainer");
 
-function addProperty(){
+form.addEventListener("submit", function(e){
 
-let title=document.getElementById("title").value
-let location=document.getElementById("location").value
-let price=document.getElementById("price").value
-let detail=document.getElementById("detail").value
+e.preventDefault();
 
-let html=`
-<div class="property">
+let title = document.getElementById("title").value;
+let province = document.getElementById("province").value;
+let price = document.getElementById("price").value;
+let detail = document.getElementById("detail").value;
+let imageFile = document.getElementById("imageInput").files[0];
+
+let reader = new FileReader();
+
+reader.onload = function(){
+
+let listing = document.createElement("div");
+listing.className = "listing";
+
+listing.innerHTML = `
+<img src="${reader.result}">
 <h3>${title}</h3>
-<p>จังหวัด: ${location}</p>
-<p>ราคา: ${price}</p>
-<p>รายละเอียด: ${detail}</p>
-<button>ติดต่อเจ้าของ</button>
-</div>
-`
+<p>จังหวัด: ${province}</p>
+<p>ราคา: ${price} บาท</p>
+<p>${detail}</p>
+`;
 
-document.getElementById("propertyList").innerHTML+=html
+container.prepend(listing);
 
-alert("ประกาศถูกโพสต์แล้ว")
+};
 
+if(imageFile){
+reader.readAsDataURL(imageFile);
 }
+
+form.reset();
+
+});
 
 </script>
 
