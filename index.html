@@ -2,173 +2,127 @@
 <html lang="th">
 <head>
 <meta charset="UTF-8">
-<title>LANDORA - Marketplace ที่ดิน</title>
+<title>LANDORA</title>
 
 <style>
+
 body{
 font-family: Arial;
 background:#f4f4f4;
-padding:20px;
-}
-
-h1{
 text-align:center;
 }
 
-form{
+.container{
 background:white;
+width:400px;
+margin:auto;
 padding:20px;
 border-radius:10px;
-max-width:500px;
-margin:auto;
+box-shadow:0 0 10px rgba(0,0,0,0.1);
 }
 
-input,textarea{
-width:100%;
+input, textarea{
+width:90%;
 padding:10px;
-margin-top:10px;
+margin:10px;
 }
 
 button{
-margin-top:10px;
-padding:10px;
-width:100%;
-background:#2ecc71;
+background:#28a745;
 color:white;
 border:none;
+padding:15px;
+width:95%;
 font-size:16px;
 cursor:pointer;
 }
 
-.listing{
+.post{
 background:white;
-padding:15px;
-margin-top:20px;
+margin:20px auto;
+padding:20px;
+width:400px;
 border-radius:10px;
-max-width:500px;
-margin-left:auto;
-margin-right:auto;
+box-shadow:0 0 5px rgba(0,0,0,0.1);
 }
 
-img{
+.post img{
 width:100%;
 border-radius:10px;
 }
+
 </style>
-  
-<script src="https://maps.googleapis.com/maps/api/js"></script>
-  
+
 </head>
 
 <body>
 
 <h1>LANDORA</h1>
 
-<form id="landForm">
+<div class="container">
 
-<input type="text" id="title" placeholder="ชื่อประกาศ" required>
+<input id="title" placeholder="ชื่อประกาศ">
 
-<input type="text" id="province" placeholder="จังหวัด" required>
+<input id="province" placeholder="จังหวัด">
 
-<input type="number" id="price" placeholder="ราคา" required>
+<input id="price" placeholder="ราคา">
 
 <textarea id="detail" placeholder="รายละเอียด"></textarea>
 
 <label>อัปโหลดรูปที่ดิน</label>
-  
-<div id="map" style="height:300px;margin-top:10px;"></div>
-<input type="file" id="imageInput" accept="image/*">
+<input type="file" id="image">
 
-<button type="submit">ลงประกาศ</button>
+<button onclick="postLand()">ลงประกาศ</button>
 
-<h3>ตำแหน่งที่ดิน</h3>
-<div id="map" style="height:400px; width:100%; background:#ddd;"></div>  
-</form>
+</div>
 
-<div id="listingContainer"></div>
+
+<h2>ประกาศที่ดิน</h2>
+
+<div id="posts"></div>
+
 
 <script>
-  
+
+function postLand(){
+
+let title=document.getElementById("title").value
+let province=document.getElementById("province").value
+let price=document.getElementById("price").value
+let detail=document.getElementById("detail").value
+let image=document.getElementById("image").files[0]
+
+let reader=new FileReader()
+
+reader.onload=function(e){
+
+let postHTML=`
+
+<div class="post">
+
+<h3>${title}</h3>
+
+<p>จังหวัด: ${province}</p>
+
+<p>ราคา: ${price}</p>
+
+<p>${detail}</p>
+
+<img src="${e.target.result}">
+
+</div>
+
+`
+
+document.getElementById("posts").innerHTML+=postHTML
+
+}
+
+reader.readAsDataURL(image)
+
+}
+
 </script>
-<h2 style="text-align:center;">ตำแหน่งที่ดิน</h2>
 
-<iframe 
-width="100%" 
-height="400" 
-style="border:0"
-loading="lazy"
-allowfullscreen
-src="https://www.google.com/maps?q=7.8804,99.3923&output=embed">
-</iframe>
- <script>
-
-let posts = JSON.parse(localStorage.getItem("landora_posts")) || [];
-
-function renderPosts(){
-    const postContainer = document.getElementById("posts");
-    postContainer.innerHTML = "";
-
-    posts.forEach(post => {
-
-        const div = document.createElement("div");
-        div.style.border = "1px solid #ccc";
-        div.style.padding = "15px";
-        div.style.marginTop = "15px";
-
-        div.innerHTML = `
-        <h3>${post.title}</h3>
-        <p>จังหวัด: ${post.province}</p>
-        <p>ราคา: ${post.price} บาท</p>
-        <p>${post.detail}</p>
-        `;
-
-        postContainer.appendChild(div);
-    });
-}
-
-function addPost(){
-
-    const title = document.getElementById("title").value;
-    const province = document.getElementById("province").value;
-    const price = document.getElementById("price").value;
-    const detail = document.getElementById("detail").value;
-
-    const post = {
-        title,
-        province,
-        price,
-        detail
-    };
-
-    posts.push(post);
-
-    localStorage.setItem("landora_posts", JSON.stringify(posts));
-
-    renderPosts();
-
-}
-
-renderPosts();
-
-</script> 
-  
-  <h2>ตำแหน่งที่ดิน</h2>
-
-<iframe
-width="100%"
-height="400"
-style="border:0"
-loading="lazy"
-allowfullscreen
-src="https://maps.google.com/maps?q=8.4304,99.9631&z=15&output=embed">
-</iframe>
-  
 </body>
 </html>
-
-
-
-
-
-
-
