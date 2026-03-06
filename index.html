@@ -63,6 +63,10 @@ border-radius:10px;
 
 <input id="title" placeholder="ชื่อประกาศ">
 
+<input id="subdistrict" placeholder="ตำบล">
+
+<input id="district" placeholder="อำเภอ">
+
 <input id="province" placeholder="จังหวัด">
 
 <input id="price" placeholder="ราคา">
@@ -76,17 +80,17 @@ border-radius:10px;
 
 </div>
 
-
 <h2>ประกาศที่ดิน</h2>
 
 <div id="posts"></div>
-
 
 <script>
 
 function postLand(){
 
 let title=document.getElementById("title").value
+let subdistrict=document.getElementById("subdistrict").value
+let district=document.getElementById("district").value
 let province=document.getElementById("province").value
 let price=document.getElementById("price").value
 let detail=document.getElementById("detail").value
@@ -101,6 +105,10 @@ let postHTML=`
 <div class="post">
 
 <h3>${title}</h3>
+
+<p>ตำบล: ${subdistrict}</p>
+
+<p>อำเภอ: ${district}</p>
 
 <p>จังหวัด: ${province}</p>
 
