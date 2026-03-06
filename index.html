@@ -2,25 +2,139 @@
 <html lang="th">
 <head>
 <meta charset="UTF-8">
-<title>LANDORA</title>
+<title>LANDORA - ตลาดซื้อขายที่ดิน</title>
+
+<style>
+
+body{
+font-family: Arial;
+margin:0;
+background:#f4f4f4;
+}
+
+header{
+background:#1e7e34;
+color:white;
+padding:20px;
+text-align:center;
+}
+
+.container{
+width:90%;
+margin:auto;
+margin-top:20px;
+}
+
+.card{
+background:white;
+padding:20px;
+margin-bottom:20px;
+border-radius:10px;
+box-shadow:0 0 10px rgba(0,0,0,0.1);
+}
+
+button{
+background:#28a745;
+color:white;
+padding:10px 20px;
+border:none;
+border-radius:5px;
+cursor:pointer;
+}
+
+button:hover{
+background:#218838;
+}
+
+.post-btn{
+text-align:center;
+margin:30px;
+}
+
+footer{
+background:#333;
+color:white;
+text-align:center;
+padding:10px;
+margin-top:40px;
+}
+
+</style>
+
 </head>
 
-<body style="font-family:Arial;text-align:center;background:#f2f2f2">
+<body>
+
+<header>
 
 <h1>LANDORA</h1>
-<p>แพลตฟอร์มซื้อขายที่ดิน</p>
+<p>แพลตฟอร์มตลาดซื้อขายที่ดิน บ้าน และอสังหาริมทรัพย์</p>
 
-<div style="background:white;padding:20px;margin:20px;border-radius:10px">
+</header>
 
-<h3>Land for Sale</h3>
+<div class="container">
 
-<p>Location: Phuket</p>
+<div class="card">
 
-<p>Price: 3,500,000 THB</p>
+<h2>ที่ดินขาย</h2>
 
-<button>Contact Owner</button>
+<p><b>จังหวัด:</b> นครศรีธรรมราช</p>
+
+<p><b>อำเภอ:</b> เมือง</p>
+
+<p><b>ราคา:</b> 2,500,000 บาท</p>
+
+<p><b>รายละเอียด:</b> ที่ดินติดถนน เหมาะสร้างบ้านหรือทำธุรกิจ</p>
+
+<button onclick="contactOwner()">ติดต่อเจ้าของ</button>
 
 </div>
+
+<div class="card">
+
+<h2>บ้านให้เช่า</h2>
+
+<p><b>จังหวัด:</b> ภูเก็ต</p>
+
+<p><b>ราคา:</b> 15,000 บาท / เดือน</p>
+
+<p><b>รายละเอียด:</b> บ้านใกล้ทะเล เหมาะสำหรับชาวต่างชาติ</p>
+
+<button onclick="contactOwner()">ติดต่อเจ้าของ</button>
+
+</div>
+
+</div>
+
+<div class="post-btn">
+
+<button onclick="postLand()">ลงประกาศขายที่ดิน</button>
+
+</div>
+
+<footer>
+
+<p>© 2026 LANDORA Platform</p>
+
+<p>เว็บไซต์นี้เป็นเพียงตัวกลางในการประกาศซื้อขายอสังหาริมทรัพย์</p>
+
+</footer>
+
+<script>
+
+function contactOwner(){
+
+alert("กรุณาติดต่อผ่านเบอร์โทรหรือ LINE ของเจ้าของประกาศ");
+
+}
+
+function postLand(){
+
+alert("ระบบลงประกาศกำลังพัฒนา");
+
+}
+
+</script>
 
 </body>
 </html>
