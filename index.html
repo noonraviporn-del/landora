@@ -4,6 +4,8 @@
 <meta charset="UTF-8">
 <title>LANDORA</title>
 
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+
 <style>
 
 body{
@@ -35,6 +37,12 @@ padding:15px;
 width:95%;
 font-size:16px;
 cursor:pointer;
+}
+
+#map{
+height:300px;
+width:90%;
+margin:auto;
 }
 
 .post{
@@ -76,6 +84,12 @@ border-radius:10px;
 <label>อัปโหลดรูปที่ดิน</label>
 <input type="file" id="image">
 
+<h3>เลือกตำแหน่งที่ดิน</h3>
+
+<div id="map"></div>
+
+<p>พิกัด: <span id="coords">ยังไม่ได้เลือก</span></p>
+
 <button onclick="postLand()">ลงประกาศ</button>
 
 </div>
@@ -84,7 +98,35 @@ border-radius:10px;
 
 <div id="posts"></div>
 
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
 <script>
+
+let lat=""
+let lng=""
+
+let map=L.map('map').setView([13.736717,100.523186],6)
+
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
+maxZoom:19
+}).addTo(map)
+
+let marker
+
+map.on('click',function(e){
+
+lat=e.latlng.lat
+lng=e.latlng.lng
+
+document.getElementById("coords").innerText=lat+" , "+lng
+
+if(marker){
+map.removeLayer(marker)
+}
+
+marker=L.marker([lat,lng]).addTo(map)
+
+})
 
 function postLand(){
 
@@ -115,6 +157,8 @@ let postHTML=`
 <p>ราคา: ${price}</p>
 
 <p>${detail}</p>
+
+<p>พิกัด: ${lat} , ${lng}</p>
 
 <img src="${e.target.result}">
 
