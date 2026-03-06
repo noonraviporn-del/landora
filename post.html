@@ -2,27 +2,25 @@
 <html lang="th">
 <head>
 <meta charset="UTF-8">
-<title>ลงประกาศขายที่ดิน - LANDORA</title>
+<title>ลงประกาศอสังหา - LANDORA</title>
 
 <style>
 
 body{
 font-family: Arial;
-background:#f4f4f4;
+background:#f5f5f5;
 margin:0;
 }
 
 header{
-background:#28a745;
+background:#1fa34a;
 color:white;
-padding:20px;
 text-align:center;
-font-size:24px;
+padding:25px;
 }
 
 .container{
-width:90%;
-max-width:600px;
+width:80%;
 margin:auto;
 background:white;
 padding:30px;
@@ -31,29 +29,35 @@ border-radius:10px;
 box-shadow:0 0 10px rgba(0,0,0,0.1);
 }
 
-input,textarea{
+input, textarea{
 width:100%;
-padding:12px;
+padding:10px;
 margin-top:10px;
-margin-bottom:15px;
+margin-bottom:20px;
 border:1px solid #ccc;
-border-radius:5px;
+border-radius:6px;
 font-size:16px;
 }
 
 button{
-background:#28a745;
+background:#1fa34a;
 color:white;
+padding:15px 30px;
 border:none;
-padding:15px;
-width:100%;
 font-size:18px;
 border-radius:6px;
 cursor:pointer;
 }
 
 button:hover{
-background:#218838;
+background:#14853a;
+}
+
+.success{
+background:#e6ffe6;
+padding:15px;
+margin-top:20px;
+display:none;
 }
 
 </style>
@@ -63,27 +67,38 @@ background:#218838;
 <body>
 
 <header>
-LANDORA ลงประกาศขายที่ดิน
+
+<h1>LANDORA</h1>
+<p>ลงประกาศขายที่ดิน บ้าน หรืออสังหาริมทรัพย์</p>
+
 </header>
 
 <div class="container">
 
-<label>ชื่อประกาศ</label>
-<input type="text" id="title" placeholder="เช่น ที่ดินติดถนนใหญ่">
+<h2>กรอกข้อมูลอสังหาริมทรัพย์</h2>
+
+<label>หัวข้อประกาศ</label>
+<input id="title" placeholder="เช่น ที่ดินติดถนนใหญ่">
 
 <label>จังหวัด</label>
-<input type="text" id="province" placeholder="เช่น นครศรีธรรมราช">
+<input id="province" placeholder="เช่น นครศรีธรรมราช">
 
-<label>ราคา (บาท)</label>
-<input type="number" id="price" placeholder="เช่น 2500000">
+<label>อำเภอ</label>
+<input id="district" placeholder="เช่น เมือง">
+
+<label>ราคา</label>
+<input id="price" placeholder="เช่น 2,500,000">
 
 <label>รายละเอียด</label>
-<textarea id="detail" rows="4" placeholder="เช่น เหมาะสร้างบ้าน ทำธุรกิจ"></textarea>
-
-<label>เบอร์โทรติดต่อ</label>
-<input type="text" id="phone" placeholder="เช่น 0812345678">
+<textarea id="detail" rows="5"></textarea>
 
 <button onclick="submitPost()">ลงประกาศ</button>
+
+<div class="success" id="successMsg">
+
+✅ ลงประกาศสำเร็จ (ตัวอย่างระบบ)
+
+</div>
 
 </div>
 
@@ -92,22 +107,18 @@ LANDORA ลงประกาศขายที่ดิน
 function submitPost(){
 
 let title = document.getElementById("title").value;
-let province = document.getElementById("province").value;
-let price = document.getElementById("price").value;
 
-if(title == "" || province == "" || price == ""){
-
-alert("กรุณากรอกข้อมูลให้ครบ");
-
-}else{
-
-alert("ประกาศถูกส่งเรียบร้อย (ระบบกำลังพัฒนา)");
-
+if(title==""){
+alert("กรุณากรอกหัวข้อประกาศ");
+return;
 }
+
+document.getElementById("successMsg").style.display="block";
 
 }
 
 </script>
 
 </body>
+
 </html>
