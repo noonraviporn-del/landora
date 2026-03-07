@@ -1,25 +1,38 @@
-function saveProperty(){
-
-let title=document.getElementById("title").value;
-let location=document.getElementById("location").value;
-let price=document.getElementById("price").value;
-let image=document.getElementById("image").value;
-
-let property={
-
-title:title,
-location:location,
-price:price,
-image:image
-
+// Firebase config
+const firebaseConfig = {
+  apiKey: "YOUR_API_KEY",
+  authDomain: "landora-df962.firebaseapp.com",
+  projectId: "landora-df962",
+  storageBucket: "landora-df962.appspot.com",
+  messagingSenderId: "YOUR_ID",
+  appId: "YOUR_APP_ID"
 };
 
-let properties=JSON.parse(localStorage.getItem("properties")) || [];
+firebase.initializeApp(firebaseConfig);
 
-properties.push(property);
+const db = firebase.firestore();
 
-localStorage.setItem("properties",JSON.stringify(properties));
+// Load properties
+async function loadProperties() {
+  const container = document.getElementById("property-list");
+  if (!container) return;
 
-alert("Property Posted!");
+  const snapshot = await db.collection("properties").get();
 
+  snapshot.forEach(doc => {
+    const data = doc.data();
+
+    const card = document.createElement("div");
+    card.innerHTML = `
+      <h3>${data.title}</h3>
+      <p>Location: ${data.location}</p>
+      <p>Price: ${data.price}</p>
+      <p>${data.description}</p>
+      <hr>
+    `;
+
+    container.appendChild(card);
+  });
 }
+
+loadProperties();
