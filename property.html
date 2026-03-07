@@ -1,10 +1,4 @@
 <!DOCTYPE html>
-<html lang="en">
-
-<head>
-
-<meta charset="UTF-8">
-<meta name="vi<!DOCTYPE html>
 <html>
 
 <head>
@@ -19,6 +13,20 @@
 
 <div id="propertyDetail"></div>
 
+<hr>
+
+<h2>Contact Owner</h2>
+
+<textarea id="messageText" placeholder="Write your message"></textarea>
+
+<br><br>
+
+<button onclick="sendMessage()">
+
+Send Message
+
+</button>
+
 <script type="module">
 
 import { initializeApp }
@@ -27,9 +35,17 @@ from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
 import {
 getFirestore,
 doc,
-getDoc
+getDoc,
+collection,
+addDoc
 }
 from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+import {
+getAuth,
+onAuthStateChanged
+}
+from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
 const firebaseConfig = {
 
@@ -46,17 +62,31 @@ const app = initializeApp(firebaseConfig);
 
 const db = getFirestore(app);
 
+const auth = getAuth(app);
+
 const urlParams = new URLSearchParams(window.location.search);
 
-const id = urlParams.get("id");
+const propertyId = urlParams.get("id");
+
+let ownerId;
+
+let currentUser;
+
+onAuthStateChanged(auth,(user)=>{
+
+currentUser=user;
+
+});
 
 async function loadProperty(){
 
-const docRef = doc(db,"properties",id);
+const docRef = doc(db,"properties",propertyId);
 
 const docSnap = await getDoc(docRef);
 
 const p = docSnap.data();
+
+ownerId = p.userId;
 
 document.getElementById("propertyDetail").innerHTML = `
 
@@ -72,188 +102,39 @@ document.getElementById("propertyDetail").innerHTML = `
 
 }
 
+window.sendMessage = async function(){
+
+let message = document.getElementById("messageText").value;
+
+if(!currentUser){
+
+alert("Please login first");
+
+return;
+
+}
+
+await addDoc(collection(db,"messages"),{
+
+propertyId:propertyId,
+
+fromUser:currentUser.uid,
+
+toUser:ownerId,
+
+message:message,
+
+date:new Date()
+
+});
+
+alert("Message Sent");
+
+document.getElementById("messageText").value="";
+
+}
+
 loadProperty();
-
-</script>
-
-</body>
-
-</html>ewport" content="width=device-width, initial-scale=1.0">
-
-<title>Property Details | LANDORA</title>
-
-<style>
-
-body{
-font-family:Arial;
-margin:0;
-background:#f5f5f5;
-}
-
-/* HEADER */
-
-.header{
-background:#2e7d32;
-color:white;
-padding:20px;
-text-align:center;
-}
-
-/* CONTAINER */
-
-.container{
-max-width:1000px;
-margin:auto;
-background:white;
-margin-top:40px;
-padding:30px;
-border-radius:10px;
-box-shadow:0 5px 20px rgba(0,0,0,0.1);
-}
-
-/* IMAGE */
-
-.property-img{
-width:100%;
-height:400px;
-object-fit:cover;
-border-radius:10px;
-}
-
-/* INFO */
-
-.code{
-color:gray;
-font-size:13px;
-margin-top:10px;
-}
-
-.price{
-color:#2e7d32;
-font-size:24px;
-font-weight:bold;
-margin-top:10px;
-}
-
-/* SECTION */
-
-.section{
-margin-top:30px;
-}
-
-/* SHARE */
-
-.share{
-background:#f1f1f1;
-padding:20px;
-border-radius:10px;
-margin-top:30px;
-}
-
-button{
-background:#2e7d32;
-color:white;
-border:none;
-padding:12px 20px;
-border-radius:6px;
-cursor:pointer;
-margin-top:10px;
-}
-
-.linkbox{
-margin-top:10px;
-padding:10px;
-background:white;
-border:1px solid #ccc;
-border-radius:6px;
-word-break:break-all;
-}
-
-</style>
-
-</head>
-
-<body>
-
-<div class="header">
-
-<h2>Property Details</h2>
-
-</div>
-
-<div class="container">
-
-<img class="property-img"
-src="https://images.unsplash.com/photo-1500382017468-9049fed747ef">
-
-<div class="code">Property Code: LD-1001</div>
-
-<h2>Land for Sale</h2>
-
-<p>Nakhon Si Thammarat</p>
-
-<div class="price">1,200,000 THB</div>
-
-<div class="section">
-
-<h3>Description</h3>
-
-<p>
-
-Beautiful land located near the city center.
-Suitable for house or investment.
-
-</p>
-
-</div>
-
-<div class="section">
-
-<h3>Owner Contact</h3>
-
-<p>Phone: 08X-XXX-XXXX</p>
-
-</div>
-
-<div class="section">
-
-<h3>Agent Commission</h3>
-
-<p>3% Commission Available</p>
-
-</div>
-
-<div class="share">
-
-<h3>Earn Commission</h3>
-
-<p>Share this listing and earn commission if the property is sold.</p>
-
-<button onclick="generateLink()">
-
-Generate Share Link
-
-</button>
-
-<div class="linkbox" id="shareLink"></div>
-
-</div>
-
-</div>
-
-<script>
-
-function generateLink(){
-
-let agent="agent01";
-
-let url=window.location.href;
-
-let share=url+"?ref="+agent;
-
-document.getElementById("shareLink").innerHTML=share;
-
-}
 
 </script>
 
