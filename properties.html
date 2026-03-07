@@ -1,143 +1,60 @@
 <!DOCTYPE html>
 <html>
-
 <head>
+  <title>Browse Properties - LANDORA</title>
 
-<title>Browse Properties | LANDORA</title>
+  <!-- Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
 
+  <style>
+    body{
+      font-family: Arial;
+      margin:0;
+      background:#f2f2f2;
+    }
+
+    header{
+      background:#2e7d32;
+      color:white;
+      padding:15px;
+      font-size:20px;
+    }
+
+    .container{
+      padding:30px;
+    }
+
+    .card{
+      background:white;
+      padding:20px;
+      margin-bottom:20px;
+      border-radius:8px;
+      box-shadow:0 2px 6px rgba(0,0,0,0.1);
+    }
+
+    .price{
+      color:green;
+      font-weight:bold;
+    }
+  </style>
 </head>
 
 <body>
 
-<h1>Browse Properties</h1>
+<header>
+LANDORA - Browse Properties
+</header>
 
-<input id="searchText" placeholder="Search title or location">
+<div class="container">
 
-<br><br>
+<h2>Available Properties</h2>
 
-<input id="maxPrice" placeholder="Max Price">
-
-<br><br>
-
-<button onclick="searchProperties()">
-
-Search
-
-</button>
-
-<hr>
-
-<div id="propertyList"></div>
-
-<script type="module">
-
-import { initializeApp }
-from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-
-import {
-getFirestore,
-collection,
-getDocs
-}
-from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-
-const firebaseConfig = {
-
-apiKey:"PASTE-YOUR-KEY",
-authDomain:"PASTE-YOUR-KEY",
-projectId:"PASTE-YOUR-KEY",
-storageBucket:"PASTE-YOUR-KEY",
-messagingSenderId:"PASTE-YOUR-KEY",
-appId:"PASTE-YOUR-KEY"
-
-};
-
-const app = initializeApp(firebaseConfig);
-
-const db = getFirestore(app);
-
-let allProperties=[];
-
-async function loadProperties(){
-
-const snapshot = await getDocs(collection(db,"properties"));
-
-snapshot.forEach(doc=>{
-
-let p = doc.data();
-
-p.id = doc.id;
-
-allProperties.push(p);
-
-});
-
-displayProperties(allProperties);
-
-}
-
-function displayProperties(list){
-
-let html="";
-
-list.forEach(p=>{
-
-html += `
-
-<div style="border:1px solid #ccc;padding:15px;margin:10px">
-
-<a href="property.html?id=${p.id}">
-
-<img src="${p.image}" width="200">
-
-<h3>${p.title}</h3>
-
-</a>
-
-<p>${p.location}</p>
-
-<p>${p.price}</p>
+<div id="property-list"></div>
 
 </div>
 
-`;
-
-});
-
-document.getElementById("propertyList").innerHTML = html;
-
-}
-
-window.searchProperties=function(){
-
-let text = document.getElementById("searchText").value.toLowerCase();
-
-let maxPrice = document.getElementById("maxPrice").value;
-
-let filtered = allProperties.filter(p=>{
-
-let matchText =
-
-p.title.toLowerCase().includes(text) ||
-
-p.location.toLowerCase().includes(text);
-
-let matchPrice =
-
-maxPrice=="" || Number(p.price) <= Number(maxPrice);
-
-return matchText && matchPrice;
-
-});
-
-displayProperties(filtered);
-
-}
-
-loadProperties();
-
-</script>
+<script src="script.js"></script>
 
 </body>
-
 </html>
