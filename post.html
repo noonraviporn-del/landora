@@ -5,7 +5,8 @@
 
 <title>Post Property</title>
 
-<script src="script.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js"></script>
 
 </head>
 
@@ -29,11 +30,67 @@
 
 <br><br>
 
-<button onclick="saveProperty()">
+<button onclick="postProperty()">
 
 Post Property
 
 </button>
+
+<script type="module">
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+
+import { getFirestore, collection, addDoc }
+
+from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+const firebaseConfig = {
+
+apiKey: "PUT-YOUR-KEY-HERE",
+
+authDomain: "PUT-YOUR-KEY-HERE",
+
+projectId: "PUT-YOUR-KEY-HERE",
+
+storageBucket: "PUT-YOUR-KEY-HERE",
+
+messagingSenderId: "PUT-YOUR-KEY-HERE",
+
+appId: "PUT-YOUR-KEY-HERE"
+
+};
+
+const app = initializeApp(firebaseConfig);
+
+const db = getFirestore(app);
+
+window.postProperty = async function(){
+
+let title=document.getElementById("title").value;
+
+let location=document.getElementById("location").value;
+
+let price=document.getElementById("price").value;
+
+let image=document.getElementById("image").value;
+
+await addDoc(collection(db,"properties"),{
+
+title:title,
+
+location:location,
+
+price:price,
+
+image:image
+
+});
+
+alert("Property Posted");
+
+}
+
+</script>
 
 </body>
 
