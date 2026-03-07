@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Agent Dashboard | LANDORA</title>
+
+<style>
+
+body{
+font-family:Arial;
+margin:0;
+background:#f5f5f5;
+}
+
+/* HEADER */
+
+.header{
+background:#2e7d32;
+color:white;
+padding:20px;
+text-align:center;
+}
+
+/* CONTAINER */
+
+.container{
+max-width:1000px;
+margin:auto;
+padding:40px;
+}
+
+/* CARD */
+
+.card{
+background:white;
+padding:20px;
+margin-bottom:20px;
+border-radius:10px;
+box-shadow:0 5px 15px rgba(0,0,0,0.1);
+}
+
+h3{
+margin-top:0;
+}
+
+button{
+background:#2e7d32;
+color:white;
+border:none;
+padding:10px 18px;
+border-radius:6px;
+cursor:pointer;
+margin-top:10px;
+}
+
+.linkbox{
+margin-top:10px;
+background:#f1f1f1;
+padding:10px;
+border-radius:6px;
+word-break:break-all;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="header">
+
+<h2>LANDORA Agent Dashboard</h2>
+
+</div>
+
+<div class="container">
+
+<!-- AGENT INFO -->
+
+<div class="card">
+
+<h3>Your Agent ID</h3>
+
+<p id="agentId">AGT-001</p>
+
+</div>
+
+<!-- SHARE LISTING -->
+
+<div class="card">
+
+<h3>Generate Referral Link</h3>
+
+<p>Enter Property Code</p>
+
+<input type="text" id="propertyCode" placeholder="Example: LD-1001">
+
+<button onclick="generateLink()">
+
+Generate Link
+
+</button>
+
+<div class="linkbox" id="refLink"></div>
+
+</div>
+
+<!-- COMMISSION -->
+
+<div class="card">
+
+<h3>My Commission</h3>
+
+<p>Total Earned</p>
+
+<h2>0 THB</h2>
+
+</div>
+
+</div>
+
+<script>
+
+function generateLink(){
+
+let agent="AGT-001";
+
+let code=document.getElementById("propertyCode").value;
+
+let link="https://yourusername.github.io/landora/property.html?code="+code+"&ref="+agent;
+
+document.getElementById("refLink").innerHTML=link;
+
+}
+
+</script>
+
+</body>
+
+</html>
