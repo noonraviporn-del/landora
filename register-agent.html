@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Register Agent | LANDORA</title>
+
+<style>
+
+body{
+font-family:Arial;
+margin:0;
+background:#f5f5f5;
+}
+
+.header{
+background:#2e7d32;
+color:white;
+padding:20px;
+text-align:center;
+}
+
+.container{
+max-width:700px;
+margin:auto;
+background:white;
+padding:30px;
+margin-top:40px;
+border-radius:10px;
+box-shadow:0 5px 15px rgba(0,0,0,0.1);
+}
+
+input,select{
+width:100%;
+padding:10px;
+margin-top:10px;
+margin-bottom:20px;
+border-radius:5px;
+border:1px solid #ccc;
+}
+
+button{
+background:#2e7d32;
+color:white;
+padding:12px;
+border:none;
+border-radius:6px;
+width:100%;
+font-size:16px;
+cursor:pointer;
+}
+
+.result{
+margin-top:20px;
+padding:15px;
+background:#f1f1f1;
+border-radius:6px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="header">
+
+<h2>Become a LANDORA Agent</h2>
+
+</div>
+
+<div class="container">
+
+<form id="agentForm">
+
+<label>Full Name</label>
+<input type="text" required>
+
+<label>Email</label>
+<input type="email" required>
+
+<label>Phone</label>
+<input type="text" required>
+
+<label>Province</label>
+<input type="text" placeholder="Example: Nakhon Si Thammarat" required>
+
+<label>District</label>
+<input type="text" placeholder="Example: Mueang" required>
+
+<label>Subdistrict</label>
+<input type="text" placeholder="Example: Pak Phun" required>
+
+<button type="submit">
+
+Register Agent
+
+</button>
+
+</form>
+
+<div class="result" id="agentResult"></div>
+
+</div>
+
+<script>
+
+let agentNumber = 2;
+
+document.getElementById("agentForm").addEventListener("submit",function(e){
+
+e.preventDefault();
+
+let id="AGT-00"+agentNumber;
+
+document.getElementById("agentResult").innerHTML=
+"Registration Successful! <br><b>Your Agent ID: "+id+"</b>";
+
+agentNumber++;
+
+});
+
+</script>
+
+</body>
+
+</html>
