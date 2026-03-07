@@ -3,39 +3,36 @@
 
 <head>
 
-<title>Browse Properties</title>
+<title>Browse Properties | LANDORA</title>
+
+</head>
+
+<body>
+
+<h1>Browse Properties</h1>
+
+<div id="propertyList"></div>
 
 <script type="module">
 
 import { initializeApp }
-
 from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
 
 import {
-
 getFirestore,
-
 collection,
-
 getDocs
-
 }
-
 from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
 const firebaseConfig = {
 
-apiKey: "PUT-YOUR-KEY-HERE",
-
-authDomain: "PUT-YOUR-KEY-HERE",
-
-projectId: "PUT-YOUR-KEY-HERE",
-
-storageBucket: "PUT-YOUR-KEY-HERE",
-
-messagingSenderId: "PUT-YOUR-KEY-HERE",
-
-appId: "PUT-YOUR-KEY-HERE"
+apiKey:"PASTE-YOUR-KEY",
+authDomain:"PASTE-YOUR-KEY",
+projectId:"PASTE-YOUR-KEY",
+storageBucket:"PASTE-YOUR-KEY",
+messagingSenderId:"PASTE-YOUR-KEY",
+appId:"PASTE-YOUR-KEY"
 
 };
 
@@ -45,27 +42,29 @@ const db = getFirestore(app);
 
 async function loadProperties(){
 
-const querySnapshot = await getDocs(collection(db,"properties"));
+const snapshot = await getDocs(collection(db,"properties"));
 
-let container=document.getElementById("list");
+let html="";
 
-querySnapshot.forEach((doc)=>{
+snapshot.forEach(doc=>{
 
-let p=doc.data();
+let p = doc.data();
 
-container.innerHTML +=
+html += `
 
-`
+<div style="border:1px solid #ccc;padding:15px;margin:10px">
 
-<div>
+<a href="property.html?id=${doc.id}">
 
-<img src="${p.image}" width="300">
+<img src="${p.image}" width="200">
 
 <h3>${p.title}</h3>
 
+</a>
+
 <p>${p.location}</p>
 
-<p>${p.price} THB</p>
+<p>${p.price}</p>
 
 </div>
 
@@ -73,19 +72,13 @@ container.innerHTML +=
 
 });
 
+document.getElementById("propertyList").innerHTML = html;
+
 }
 
-window.onload=loadProperties;
+loadProperties();
 
 </script>
-
-</head>
-
-<body>
-
-<h1>Browse Properties</h1>
-
-<div id="list"></div>
 
 </body>
 
