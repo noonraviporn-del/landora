@@ -1,89 +1,171 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Marketplace</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
+<title>LANDORA - Property Marketplace</title>
 
 <style>
 
 body{
-font-family:Arial;
-background:#f5f5f5;
 margin:0;
+font-family:Arial, Helvetica, sans-serif;
+background:#f5f5f5;
 }
 
-header{
-background:#1877f2;
+/* NAVBAR */
+
+.navbar{
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:15px 40px;
+background:white;
+box-shadow:0 2px 10px rgba(0,0,0,0.1);
+}
+
+.logo{
+font-size:24px;
+font-weight:bold;
+color:#2e7d32;
+}
+
+.menu a{
+margin-left:20px;
+text-decoration:none;
+color:#333;
+font-weight:500;
+}
+
+.post-btn{
+background:#2e7d32;
 color:white;
-padding:15px;
-font-size:22px;
+padding:10px 18px;
+border-radius:6px;
+}
+
+/* HERO */
+
+.hero{
+height:500px;
+background:url("https://images.unsplash.com/photo-1568605114967-8130f3a36994") center/cover;
+display:flex;
+align-items:center;
+justify-content:center;
+flex-direction:column;
+color:white;
 text-align:center;
 }
 
-.container{
-width:90%;
-max-width:900px;
-margin:auto;
-margin-top:20px;
+.hero h1{
+font-size:42px;
+margin-bottom:20px;
+text-shadow:0 3px 10px rgba(0,0,0,0.5);
 }
 
-.form-box{
+/* SEARCH */
+
+.search-box{
 background:white;
 padding:20px;
 border-radius:10px;
-margin-bottom:20px;
-box-shadow:0 0 10px rgba(0,0,0,0.1);
+box-shadow:0 5px 20px rgba(0,0,0,0.2);
+display:flex;
+gap:10px;
+flex-wrap:wrap;
+justify-content:center;
 }
 
-input{
-width:100%;
+.search-box select,
+.search-box button{
 padding:10px;
-margin-top:8px;
-margin-bottom:10px;
-border:1px solid #ddd;
-border-radius:6px;
+border-radius:5px;
+border:1px solid #ccc;
 }
 
-button{
-background:#1877f2;
+.search-box button{
+background:#2e7d32;
 color:white;
 border:none;
-padding:10px;
-border-radius:6px;
 cursor:pointer;
 }
 
-button:hover{
-background:#0f63d1;
+/* SECTION */
+
+.section{
+padding:60px 40px;
+max-width:1200px;
+margin:auto;
 }
 
-.post{
+.section h2{
+text-align:center;
+margin-bottom:40px;
+}
+
+/* PROPERTY CARDS */
+
+.cards{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+gap:20px;
+}
+
+.card{
 background:white;
-padding:15px;
 border-radius:10px;
-margin-bottom:15px;
-box-shadow:0 0 8px rgba(0,0,0,0.1);
+overflow:hidden;
+box-shadow:0 5px 15px rgba(0,0,0,0.1);
 }
 
-img{
+.card img{
 width:100%;
-border-radius:10px;
+height:200px;
+object-fit:cover;
+}
+
+.card-content{
+padding:15px;
+}
+
+.price{
+color:#2e7d32;
+font-weight:bold;
 margin-top:10px;
 }
 
-.actions{
-margin-top:10px;
+/* EARN SECTION */
+
+.earn{
+background:#2e7d32;
+color:white;
+padding:60px 20px;
+text-align:center;
 }
 
-.delete{
-background:red;
+.earn h2{
+margin-bottom:20px;
 }
 
-.edit{
-background:orange;
+.earn button{
+background:white;
+color:#2e7d32;
+padding:12px 25px;
+border:none;
+border-radius:6px;
+font-size:16px;
+cursor:pointer;
+}
+
+/* FOOTER */
+
+.footer{
+background:#222;
+color:#aaa;
+text-align:center;
+padding:20px;
+margin-top:40px;
 }
 
 </style>
@@ -92,164 +174,116 @@ background:orange;
 
 <body>
 
-<header>
-Marketplace ซื้อขายสินค้า
-</header>
+<!-- NAVBAR -->
 
-<div class="container">
+<div class="navbar">
 
-<div class="form-box">
+<div class="logo">LANDORA</div>
 
-<h3>ลงขายสินค้า</h3>
-
-<input id="title" placeholder="ชื่อสินค้า">
-
-<input id="price" placeholder="ราคา">
-
-<input id="province" placeholder="จังหวัด">
-
-<input id="district" placeholder="อำเภอ">
-
-<input id="subdistrict" placeholder="ตำบล">
-
-<input type="file" id="image">
-
-<button onclick="addPost()">โพสต์ขาย</button>
-
-<p id="result"></p>
+<div class="menu">
+<a href="#">Home</a>
+<a href="#">Buy</a>
+<a href="#">Rent</a>
+<a href="#">Land</a>
+<a href="#">Earn</a>
+<a class="post-btn" href="#">Post Property</a>
+</div>
 
 </div>
 
-<div id="posts"></div>
+<!-- HERO -->
 
-</div>
+<div class="hero">
 
-<script>
+<h1>Find Your Perfect Property</h1>
 
-const firebaseConfig = {
-apiKey:"YOUR_API",
-authDomain:"YOUR_DOMAIN",
-projectId:"YOUR_PROJECT",
-storageBucket:"YOUR_BUCKET",
-messagingSenderId:"YOUR_ID",
-appId:"YOUR_APP"
-};
+<div class="search-box">
 
-firebase.initializeApp(firebaseConfig);
+<select>
+<option>Select Province</option>
+<option>Bangkok</option>
+<option>Nakhon Si Thammarat</option>
+<option>Chiang Mai</option>
+</select>
 
-const db = firebase.firestore();
+<select>
+<option>Select District</option>
+<option>Mueang</option>
+<option>Pak Phun</option>
+</select>
 
-function addPost(){
+<select>
+<option>Property Type</option>
+<option>Land</option>
+<option>House</option>
+<option>Condo</option>
+<option>Commercial</option>
+</select>
 
-const title=document.getElementById("title").value;
-const price=document.getElementById("price").value;
-const province=document.getElementById("province").value;
-const district=document.getElementById("district").value;
-const subdistrict=document.getElementById("subdistrict").value;
-
-db.collection("posts").add({
-
-title:title,
-price:price,
-province:province,
-district:district,
-subdistrict:subdistrict,
-date:Date.now()
-
-})
-.then(()=>{
-
-document.getElementById("result").innerHTML="โพสต์สำเร็จ";
-
-loadPosts();
-
-})
-
-.catch(()=>{
-
-document.getElementById("result").innerHTML="โพสต์ไม่สำเร็จ";
-
-});
-
-}
-
-function loadPosts(){
-
-db.collection("posts").orderBy("date","desc").get()
-.then((snapshot)=>{
-
-let html="";
-
-snapshot.forEach((doc)=>{
-
-const data=doc.data();
-
-html+=`
-
-<div class="post">
-
-<h3>${data.title}</h3>
-
-<p>ราคา : ${data.price}</p>
-
-<p>${data.subdistrict} ${data.district} ${data.province}</p>
-
-<div class="actions">
-
-<button class="edit" onclick="editPost('${doc.id}')">แก้ไข</button>
-
-<button class="delete" onclick="deletePost('${doc.id}')">ลบ</button>
+<button>Search</button>
 
 </div>
 
 </div>
 
-`;
+<!-- FEATURED -->
 
-});
+<div class="section">
 
-document.getElementById("posts").innerHTML=html;
+<h2>Featured Properties</h2>
 
-});
+<div class="cards">
 
-}
+<div class="card">
+<img src="https://images.unsplash.com/photo-1500382017468-9049fed747ef">
+<div class="card-content">
+<h3>Land for Sale</h3>
+<p>Nakhon Si Thammarat</p>
+<div class="price">1,200,000 THB</div>
+</div>
+</div>
 
-function deletePost(id){
+<div class="card">
+<img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c">
+<div class="card-content">
+<h3>House for Sale</h3>
+<p>Bangkok</p>
+<div class="price">3,800,000 THB</div>
+</div>
+</div>
 
-db.collection("posts").doc(id).delete()
+<div class="card">
+<img src="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2">
+<div class="card-content">
+<h3>Condo for Rent</h3>
+<p>Chiang Mai</p>
+<div class="price">15,000 THB / month</div>
+</div>
+</div>
 
-.then(()=>{
+</div>
 
-loadPosts();
+</div>
 
-});
+<!-- EARN WITH LANDORA -->
 
-}
+<div class="earn">
 
-function editPost(id){
+<h2>Earn Money Selling Property</h2>
 
-const newTitle=prompt("ชื่อสินค้าใหม่");
+<p>Choose properties, share your link, and earn commission.</p>
 
-const newPrice=prompt("ราคาใหม่");
+<button>Become an Agent</button>
 
-db.collection("posts").doc(id).update({
+</div>
 
-title:newTitle,
-price:newPrice
+<!-- FOOTER -->
 
-})
+<div class="footer">
 
-.then(()=>{
+© 2026 LANDORA Property Marketplace
 
-loadPosts();
-
-});
-
-}
-
-loadPosts();
-
-</script>
+</div>
 
 </body>
 </html>
