@@ -1,63 +1,63 @@
 <!DOCTYPE html>
-<html lang="th">
+<html lang="en">
+
 <head>
+
 <meta charset="UTF-8">
-<title>ลงประกาศอสังหา - LANDORA</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Post Property | LANDORA</title>
 
 <style>
 
 body{
-font-family: Arial;
-background:#f5f5f5;
+font-family:Arial;
 margin:0;
+background:#f5f5f5;
 }
 
-header{
-background:#1fa34a;
+.header{
+background:#2e7d32;
 color:white;
+padding:20px;
 text-align:center;
-padding:25px;
 }
 
 .container{
-width:80%;
+max-width:800px;
 margin:auto;
 background:white;
 padding:30px;
-margin-top:30px;
+margin-top:40px;
 border-radius:10px;
-box-shadow:0 0 10px rgba(0,0,0,0.1);
+box-shadow:0 5px 15px rgba(0,0,0,0.1);
 }
 
-input, textarea{
+input,select,textarea{
 width:100%;
 padding:10px;
 margin-top:10px;
 margin-bottom:20px;
+border-radius:5px;
 border:1px solid #ccc;
-border-radius:6px;
-font-size:16px;
 }
 
 button{
-background:#1fa34a;
+background:#2e7d32;
 color:white;
-padding:15px 30px;
+padding:12px;
 border:none;
-font-size:18px;
+width:100%;
 border-radius:6px;
+font-size:16px;
 cursor:pointer;
 }
 
-button:hover{
-background:#14853a;
-}
-
-.success{
-background:#e6ffe6;
-padding:15px;
+.code{
 margin-top:20px;
-display:none;
+background:#f1f1f1;
+padding:10px;
+border-radius:6px;
 }
 
 </style>
@@ -66,56 +66,94 @@ display:none;
 
 <body>
 
-<header>
+<div class="header">
 
-<h1>LANDORA</h1>
-<p>ลงประกาศขายที่ดิน บ้าน หรืออสังหาริมทรัพย์</p>
+<h2>Post Property</h2>
 
-</header>
+</div>
 
 <div class="container">
 
-<h2>กรอกข้อมูลอสังหาริมทรัพย์</h2>
+<form id="propertyForm">
 
-<label>หัวข้อประกาศ</label>
-<input id="title" placeholder="เช่น ที่ดินติดถนนใหญ่">
+<label>Property Title</label>
+<input type="text" required>
 
-<label>จังหวัด</label>
-<input id="province" placeholder="เช่น นครศรีธรรมราช">
+<label>Property Type</label>
+<select>
 
-<label>อำเภอ</label>
-<input id="district" placeholder="เช่น เมือง">
+<option>Land</option>
+<option>House</option>
+<option>Condo</option>
+<option>Commercial</option>
 
-<label>ราคา</label>
-<input id="price" placeholder="เช่น 2,500,000">
+</select>
 
-<label>รายละเอียด</label>
-<textarea id="detail" rows="5"></textarea>
+<label>Province</label>
+<input type="text" required>
 
-<button onclick="submitPost()">ลงประกาศ</button>
+<label>District</label>
+<input type="text" required>
 
-<div class="success" id="successMsg">
+<label>Price (THB)</label>
+<input type="number" required>
 
-✅ ลงประกาศสำเร็จ (ตัวอย่างระบบ)
+<label>Description</label>
+<textarea rows="4"></textarea>
+
+<label>Allow Agents to Sell?</label>
+<select id="agentOption">
+
+<option value="no">No</option>
+<option value="yes">Yes</option>
+
+</select>
+
+<div id="commissionBox" style="display:none;">
+
+<label>Commission (%)</label>
+<input type="number">
 
 </div>
+
+<button type="submit">
+
+Post Property
+
+</button>
+
+</form>
+
+<div class="code" id="propertyCode"></div>
 
 </div>
 
 <script>
 
-function submitPost(){
+let propertyNumber = 1001;
 
-let title = document.getElementById("title").value;
+document.getElementById("agentOption").addEventListener("change",function(){
 
-if(title==""){
-alert("กรุณากรอกหัวข้อประกาศ");
-return;
+if(this.value === "yes"){
+document.getElementById("commissionBox").style.display="block";
+}else{
+document.getElementById("commissionBox").style.display="none";
 }
 
-document.getElementById("successMsg").style.display="block";
+});
 
-}
+document.getElementById("propertyForm").addEventListener("submit",function(e){
+
+e.preventDefault();
+
+let code = "LD-" + propertyNumber;
+
+document.getElementById("propertyCode").innerHTML =
+"Property Posted Successfully!<br><b>Property Code: "+code+"</b>";
+
+propertyNumber++;
+
+});
 
 </script>
 
