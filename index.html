@@ -1,41 +1,120 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
 
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>LANDORA</title>
+
+<style>
+
+body{
+font-family:Arial;
+margin:0;
+background:#f5f5f5;
+}
+
+/* NAVBAR */
+
+.navbar{
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:15px 40px;
+background:white;
+box-shadow:0 2px 10px rgba(0,0,0,0.1);
+}
+
+.logo{
+font-weight:bold;
+color:#2e7d32;
+font-size:22px;
+}
+
+.nav-links a{
+margin-left:20px;
+text-decoration:none;
+color:#333;
+}
+
+/* HERO */
+
+.hero{
+background-image:url("https://images.unsplash.com/photo-1600585154340-be6161a56a0c");
+background-size:cover;
+background-position:center;
+height:400px;
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+color:white;
+text-align:center;
+}
+
+.hero h1{
+font-size:40px;
+margin:0;
+}
+
+.hero p{
+margin-top:10px;
+}
+
+.buttons{
+margin-top:20px;
+}
+
+.buttons a{
+background:#2e7d32;
+color:white;
+padding:10px 18px;
+margin:5px;
+border-radius:6px;
+text-decoration:none;
+}
+
+</style>
 
 </head>
 
 <body>
 
-<h1>LANDORA</h1>
+<!-- NAVBAR -->
 
-<p>Real Estate Platform</p>
+<div class="navbar">
 
-<br>
+<div class="logo">LANDORA</div>
 
-<a href="properties.html">
+<div class="nav-links">
 
-Browse Properties
+<a href="properties.html">Browse</a>
+<a href="post.html">Post Property</a>
+<a href="login.html">Login</a>
 
-</a>
+</div>
 
-<br><br>
+</div>
 
-<a href="post.html">
+<!-- HERO -->
 
-Post Property
+<div class="hero">
 
-</a>
+<h1>Find Your Perfect Property</h1>
 
-<br><br>
+<p>Buy, Rent or Sell Property Easily</p>
 
-<a href="login.html">
+<div class="buttons">
 
-Login / Signup
+<a href="properties.html">Browse Properties</a>
 
-</a>
+<a href="post.html">Post Property</a>
+
+</div>
+
+</div>
 
 </body>
 
