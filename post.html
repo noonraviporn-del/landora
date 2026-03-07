@@ -94,9 +94,13 @@ const db = getFirestore(app);
 
 const storage = getStorage(app);
 
+let currentUser;
+
 onAuthStateChanged(auth,(user)=>{
 
 if(user){
+
+currentUser=user;
 
 document.getElementById("formArea").style.display="block";
 
@@ -129,12 +133,10 @@ let imageURL = await getDownloadURL(storageRef);
 await addDoc(collection(db,"properties"),{
 
 title:title,
-
 location:location,
-
 price:price,
-
-image:imageURL
+image:imageURL,
+userId:currentUser.uid
 
 });
 
