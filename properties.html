@@ -11,6 +11,22 @@
 
 <h1>Browse Properties</h1>
 
+<input id="searchText" placeholder="Search title or location">
+
+<br><br>
+
+<input id="maxPrice" placeholder="Max Price">
+
+<br><br>
+
+<button onclick="searchProperties()">
+
+Search
+
+</button>
+
+<hr>
+
 <div id="propertyList"></div>
 
 <script type="module">
@@ -40,21 +56,37 @@ const app = initializeApp(firebaseConfig);
 
 const db = getFirestore(app);
 
+let allProperties=[];
+
 async function loadProperties(){
 
 const snapshot = await getDocs(collection(db,"properties"));
-
-let html="";
 
 snapshot.forEach(doc=>{
 
 let p = doc.data();
 
+p.id = doc.id;
+
+allProperties.push(p);
+
+});
+
+displayProperties(allProperties);
+
+}
+
+function displayProperties(list){
+
+let html="";
+
+list.forEach(p=>{
+
 html += `
 
 <div style="border:1px solid #ccc;padding:15px;margin:10px">
 
-<a href="property.html?id=${doc.id}">
+<a href="property.html?id=${p.id}">
 
 <img src="${p.image}" width="200">
 
@@ -73,6 +105,32 @@ html += `
 });
 
 document.getElementById("propertyList").innerHTML = html;
+
+}
+
+window.searchProperties=function(){
+
+let text = document.getElementById("searchText").value.toLowerCase();
+
+let maxPrice = document.getElementById("maxPrice").value;
+
+let filtered = allProperties.filter(p=>{
+
+let matchText =
+
+p.title.toLowerCase().includes(text) ||
+
+p.location.toLowerCase().includes(text);
+
+let matchPrice =
+
+maxPrice=="" || Number(p.price) <= Number(maxPrice);
+
+return matchText && matchPrice;
+
+});
+
+displayProperties(filtered);
 
 }
 
