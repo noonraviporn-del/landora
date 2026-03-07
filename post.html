@@ -3,16 +3,13 @@
 
 <head>
 
-<title>Post Property</title>
-
-<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js"></script>
+<title>Post Property | LANDORA</title>
 
 </head>
 
 <body>
 
-<h2>Post Property</h2>
+<h1>Post Property</h1>
 
 <input id="title" placeholder="Property Title">
 
@@ -26,7 +23,7 @@
 
 <br><br>
 
-<input id="image" placeholder="Image URL">
+<input type="file" id="imageFile">
 
 <br><br>
 
@@ -38,31 +35,47 @@ Post Property
 
 <script type="module">
 
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import { initializeApp }
 
-import { getFirestore, collection, addDoc }
+from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+
+import {
+
+getFirestore,
+collection,
+addDoc
+
+}
 
 from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
+import {
+
+getStorage,
+ref,
+uploadBytes,
+getDownloadURL
+
+}
+
+from "https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js";
+
 const firebaseConfig = {
 
-apiKey: "PUT-YOUR-KEY-HERE",
-
-authDomain: "PUT-YOUR-KEY-HERE",
-
-projectId: "PUT-YOUR-KEY-HERE",
-
-storageBucket: "PUT-YOUR-KEY-HERE",
-
-messagingSenderId: "PUT-YOUR-KEY-HERE",
-
-appId: "PUT-YOUR-KEY-HERE"
+apiKey: "PASTE-YOUR-KEY",
+authDomain: "PASTE-YOUR-KEY",
+projectId: "PASTE-YOUR-KEY",
+storageBucket: "PASTE-YOUR-KEY",
+messagingSenderId: "PASTE-YOUR-KEY",
+appId: "PASTE-YOUR-KEY"
 
 };
 
 const app = initializeApp(firebaseConfig);
 
 const db = getFirestore(app);
+
+const storage = getStorage(app);
 
 window.postProperty = async function(){
 
@@ -72,7 +85,13 @@ let location=document.getElementById("location").value;
 
 let price=document.getElementById("price").value;
 
-let image=document.getElementById("image").value;
+let file=document.getElementById("imageFile").files[0];
+
+let storageRef = ref(storage,"images/"+file.name);
+
+await uploadBytes(storageRef,file);
+
+let imageURL = await getDownloadURL(storageRef);
 
 await addDoc(collection(db,"properties"),{
 
@@ -82,7 +101,7 @@ location:location,
 
 price:price,
 
-image:image
+image:imageURL
 
 });
 
